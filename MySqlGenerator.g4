@@ -7,6 +7,8 @@ tabela1findCount
 tabela1findCountkolumna2SUBtabela2findAll
 tabela1findCountkolumna2kolumna3
 tabela1findAllBykolumna1LessThanOrEquals
+tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRR
+tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRRAndkolumna1LessThankolumna2Andkolumna2Equals
 */
 
 
@@ -19,7 +21,8 @@ COLUMNNAME // to również będzie dynamicznie dodawane, na podstawie skanowania
     ;
 ALL: 'All';
 SUBQUERY: 'SUB';
-
+LPAREN : 'LL';
+RPAREN : 'RR';
 
 // do zagnieżdżen
 top
@@ -37,7 +40,7 @@ statement
 
 
 findStatement
-    : FIND selectItem (whereClause)? (orderByClause)? //(orderByClause)? (limitClause)? (groupByClause)?
+    : FIND selectItem (whereClause)? //(orderByClause)? (limitClause)? (groupByClause)?
     ;
 
 selectItem
@@ -61,37 +64,54 @@ aggregateFunction
 //rightParen : 'RR';
 // ROZWINĄĆ Z DOKUMENTACJI Like, Null, After
 
+//Rekurencyjne zagnieżdżenia. można dać wiele do tej samej kolumny.
+//todo dopracować nawiasowanie?
 whereClause
     : WHERE condition
     ;
 
 condition
-    : variableExpression (logicalOperator variableExpression)*
+    : variableexpression
+    | variableexpression AND (variableexpression | condition)
+    | variableexpression OR (variableexpression | condition)
+    | LPAREN (variableexpression | condition) RPAREN
     ;
 
-
-variableExpression
-    :COLUMNNAME expression
+variableexpression
+    : COLUMNNAME expression
     ;
 
 expression
-    : (NOT)? comparisonOperator (logicalOperator (NOT)? comparisonOperator)*
+    : operator
+    | operator logicalOperator (operator | expression)
+//    | operator OR (operator | expression)
+    | LPAREN (operator | expression) RPAREN
     ;
+
+//variableExpression
+//    :COLUMNNAME expression
+//    ;
+//
+//expression
+//    : (NOT)? comparisonOperator (logicalOperator (NOT)? comparisonOperator)*
+//    ;
 
 logicalOperator
     : AND
     | OR
     ;
 
-comparisonOperator
+operator
     :('Equals' | 'LessThan' | 'GreaterThan' | 'Between') (COLUMNNAME)?
+    | IS_NULL | ('Between' (COLUMNNAME)? AND (COLUMNNAME)?)
+    | IN (query)?
     ;
 
 //===============================================================
 //                          ORDER BY
 //===============================================================
-orderByClause
-    :
+//orderByClause
+//    :
 
 WS
     : [ \t\r\n]+ -> skip // Ignoruj białe znaki między tokenami

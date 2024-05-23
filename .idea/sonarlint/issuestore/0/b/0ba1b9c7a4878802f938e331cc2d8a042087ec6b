@@ -1,0 +1,15 @@
+
+y
+java:S1854"6Remove this useless assignment to local variable "in".(ˆ¨ŸÉ8ð•¢¸ú1J$6b98bb38-4177-4c95-813c-3bfccda0c8c3
+‡
+java:S1854"?Remove this useless assignment to local variable "nazwaMetody".(æºŽóúÿÿÿÿ8ð•¢¸ú1J$971f38b5-bd6b-4ddd-988b-0920e80c6890
+x
+java:S1481"0Remove this unused "nazwaMetody" local variable.(æºŽóúÿÿÿÿ8ò•¢¸ú1J$6ac26bca-6db8-43b9-b2dc-047cd7191142
+j
+java:S1481"'Remove this unused "in" local variable.(ˆ¨ŸÉ8æ‚£¸ú1J$642eb2ac-67ed-46df-9afc-b3d8499d5e84
+r	java:S106+"+Replace this use of System.out by a logger.(»‘¨õþÿÿÿÿ8õ•¢¸ú1J$054952e2-0f71-439c-bd72-e0bc236a7770
+m	java:S106,"+Replace this use of System.out by a logger.(ŒÑ€Ñ8÷•¢¸ú1J$95e37e96-7543-4acd-9c5f-4d2f611f3ab3
+{
+java:S18743"8Remove this use of "ANTLRInputStream"; it is deprecated.(ó¯Æö8ù•¢¸ú1J$7066fee2-6bcd-42cc-9369-fabd22d0a849
+{
+java:S18743"8Remove this use of "ANTLRInputStream"; it is deprecated.(ó¯Æö8ù•¢¸ú1J$92d54536-2632-4d0c-9051-a828315d8938

@@ -6,11 +6,17 @@ tabela1findAll
 tabela1findCount
 tabela1findCountkolumna2SUBtabela2findAll
 tabela1findCountkolumna2kolumna3
-tabela1findAllBykolumna1LessThanOrEquals
+tabela1findAllWherekolumna1LessThanOrEquals
 tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRR
 tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRRAndkolumna1LessThankolumna2Andkolumna2Equals
 tabela1findkolumna1OrderBykolumna2GroupBykolumna1
 tabela1deleteWherekolumna1Equals
+tabela1findkolumna1Wherekolumna1LessThanOrEqualsOrderBykolumna2GroupBykolumna1
+
+
+full test:
+tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRRAndkolumna1LessThankolumna2Andkolumna2EqualsOrderBykolumna1GroupBykolumna2
+tabela1findAllWherekolumna1LessThan
 
 */
 
@@ -61,24 +67,27 @@ ASC: 'Asc';
 DESC: 'Desc';
 
 
-// do zagnieżdżen
-top
-    : query EOF
-    ;
+// do zagnieżdżen querek
+//top
+//    : query EOF
+//    ;
 
 query
-    : TABLENAME statement
+    : TABLENAME statement EOF
     ;
 
 statement
-    : findStatement
-    | deleteStatement
-    //| deleteStatement | updateStatement | insertStatement
+    : (findStatement | deleteStatement)
+//    //| deleteStatement | updateStatement | insertStatement
     ;
 
 
 findStatement
-    : FIND selectItem (whereClause)? (orderByClause)? (groupByClause)? //(limitClause)? (Having)?
+    : FIND selectItem findAdditionalClausules //(limitClause)? (Having)?
+    ;
+
+findAdditionalClausules
+    : (whereClause)? (orderByClause)? (groupByClause)?
     ;
 
 deleteStatement
@@ -86,16 +95,21 @@ deleteStatement
     ;
 
 selectItem
-    : ALL | (aggregateOrColumnOrSubQuery)+
+    : (ALL | (aggregateOrColumnOrSubQuery)+)
     ;
 
 aggregateOrColumnOrSubQuery
-    : aggregateFunction | COLUMNNAME | (SUBQUERY query)
+    :(COLUMNNAME | aggregateFunction)  // | (SUBQUERY query)
     ;
 
 aggregateFunction
     : COUNT ALL
-    | (COUNT | SUM | AVG | MIN | MAX) COLUMNNAME ;
+    | aggregationType COLUMNNAME ;
+
+aggregationType:
+    | (COUNT | SUM | AVG | MIN | MAX)
+    ;
+
 
 //===============================================================
 //                          WHERE
@@ -108,31 +122,28 @@ whereClause
     ;
 
 condition
-    : variableexpression
+    : (variableexpression
     | variableexpression AND (variableexpression | condition)
     | variableexpression OR (variableexpression | condition)
-    | LPAREN (variableexpression | condition) RPAREN
+    | LPAREN (variableexpression | condition) RPAREN)
     ;
 
 variableexpression
     : COLUMNNAME expression
     ;
 
+// mozna by uprościc i dać oddzielnie operatory. ale po co sobie uturdniać.
 expression
     : operator
-    | operator logicalOperator (operator | expression)
+    | operator AND (operator | expression)
+    | operator OR (operator | expression)
     | LPAREN (operator | expression) RPAREN
-    ;
-
-logicalOperator
-    : AND
-    | OR
     ;
 
 operator
     :('Equals' | 'LessThan' | 'GreaterThan' | 'Between') (COLUMNNAME)?
     | IS_NULL | ('Between' (COLUMNNAME)? AND (COLUMNNAME)?)
-    | IN (query)?
+//    | IN (query)?
     ;
 
 //===============================================================

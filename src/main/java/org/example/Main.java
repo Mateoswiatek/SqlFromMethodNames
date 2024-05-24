@@ -1,57 +1,48 @@
 package org.example;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.util.List;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+//todo zrobić aby nazwy się generowały w zależności od
+
+@Slf4j
 public class Main {
     public static void main(String[] args) {
-        String nazwaMetody = "tabela1findAll";
-        CharStream in = CharStreams.fromString("cos tam");
+        var list = List.of(
+//                "tabela1findAll",
+//                "tabela1findkolumna1",
+//                "tabela1findkolumna1kolumna2",
+//                "tabela1findkolumna1kolumna2Countkolumna1",
+//                "tabela1findMaxkolumna1kolumna2Maxkolumna1",
+//                "tabela1findAllWherekolumna1LessThan",
+                "tabela1findkolumna1Avgkolumna2WhereLLkolumna1LessThanRR"
+//                "tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRR"
+//                "tabela1findkolumna1Wherekolumna1LessThanOrEqualsOrderBykolumna2GroupBykolumna1",
+//                "tabela1findkolumna1CountAllkolumna1Maxkolumna2kolumna1Sumkolumna2kolumna1Avgkolumna2kolumna1Minkolumna2kolumna1Maxkolumna2kolumna1"
 
+        );
 
-        String[] testInputs = {
-                "tabela1findAll",
-                "tabela1findCountkolumna1"
-        };
-
-        for (String input : testInputs) {
-            // Utwórz strumień wejściowy z testowego wejścia
+        list.forEach(input -> {
             CharStream charStream = CharStreams.fromString(input);
 
-            // Utwórz lexer
-            MySqlGeneratorLexer lexer = new MySqlGeneratorLexer(charStream);
-
-            // Utwórz strumień tokenów
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-            // Utwórz parser
-            MySqlGeneratorParser parser = new MySqlGeneratorParser(tokens);
-
-            // Uruchom parser na regule 'top'
-            ParseTree tree = parser.query();
+            var out = compile(charStream);
 
             // Wypisz drzewo parse
-            System.out.println("Parse tree for input: " + input);
-            System.out.println(tree.toStringTree(parser));
-        }
+            log.info("Parse tree for input={}", input);
+            log.info("Output={}", out);
+        });
 
     }
 
-    public static String compile(FileInputStream fis) throws IOException {
-        // Create a CharStream that reads from standard input
-        ANTLRInputStream input = new ANTLRInputStream(fis);
 
+    public static String compile(CharStream input) {
         // Create a lexer that feeds off of input CharStream
-
         MySqlGeneratorLexer lexer = new MySqlGeneratorLexer(input);
 
         // Create a buffer of tokens pulled from the lexer

@@ -1,9 +1,11 @@
 package org.example;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.MySqlGeneratorBaseVisitor;
 import org.example.MySqlGeneratorParser;
 import lombok.extern.slf4j.Slf4j;
 import org.example.common.AggregateFunctionMapper;
+import org.example.common.SimpleOperatorMapper;
 
 import java.util.stream.Collectors;
 
@@ -17,6 +19,7 @@ public class AntlrParser extends MySqlGeneratorBaseVisitor<String> {
 //    ArrayList<String> tableNames = new ArrayList<>(); w przyszlosci, gdy bedzie można dodawać zagnieżdżenia
     StringBuilder aggregateOutput = new StringBuilder();
     String tableName;
+    String tmpColumnName;
 
     @Override
     public String visitQuery(MySqlGeneratorParser.QueryContext ctx) {
@@ -106,9 +109,9 @@ public class AntlrParser extends MySqlGeneratorBaseVisitor<String> {
     @Override
     public String visitWhereClause(MySqlGeneratorParser.WhereClauseContext ctx) {
         StringBuilder query = new StringBuilder();
-        query.append("WHERE (");
+        query.append("WHERE ( ");
         query.append(ctx.condition().accept(this));
-        query.append(") ");
+        query.append(")");
         return query.toString();
     }
 
@@ -116,38 +119,40 @@ public class AntlrParser extends MySqlGeneratorBaseVisitor<String> {
     public String visitCondition(MySqlGeneratorParser.ConditionContext ctx) {
         log.debug(ctx.getText());
         log.debug("weszlismy do condition");
+
         StringBuilder query = new StringBuilder();
         if(ctx.LPAREN() != null) {
-            query.append("(");
+            query.append(ctx.NOT() == null ? "" : "NOT");
+            query.append("( ");
             if(ctx.variableexpression(0) != null) {
                 query.append(ctx.variableexpression(0).accept(this));
             } else {
                 query.append(ctx.condition().accept(this));
             }
             query.append(") ");
-        }
+        } else {
+            query.append(ctx.variableexpression(0).accept(this));
+            if(ctx.AND() != null || ctx.OR() != null) {
+                if(ctx.AND() != null) {
+                    query.append("AND ");
+                } else {
+                    query.append("OR ");
+                }
 
-        if(ctx.AND() != null || ctx.OR() != null) {
-            if(ctx.AND() != null) {
-                query.append("AND ");
-            } else {
-                query.append("OR ");
+                if(ctx.variableexpression(1) != null) {
+                    query.append(ctx.variableexpression(1).accept(this));
+                } else {
+                    query.append(ctx.condition().accept(this));
+                }
             }
-
-            if(ctx.variableexpression(1) != null) {
-                ctx.variableexpression(1).accept(this);
-            } else {
-                query.append(ctx.condition().accept(this));
-            }
         }
-
-        query.append(genIfNotNull(ctx.RPAREN(), ")"));
         return query.toString();
     }
 
     @Override
     public String visitVariableexpression(MySqlGeneratorParser.VariableexpressionContext ctx) {
-        return ctx.COLUMNNAME().getText() + " " + ctx.expression().accept(this);
+        this.tmpColumnName = ctx.COLUMNNAME().getText();
+        return ctx.expression().accept(this);
     }
 
     @Override
@@ -162,13 +167,15 @@ public class AntlrParser extends MySqlGeneratorBaseVisitor<String> {
             query.append("(");
             if(ctx.operator(0) != null) {
                 log.debug("Wewnatrz tego dla 0: {}", ctx.operator(0).accept(this));
+
+
                 query.append(ctx.operator(0).accept(this));
             } else {
                 query.append(ctx.expression().accept(this));
             }
             query.append(") ");
         } else {
-            ctx.operator(0).accept(this);
+            query.append(ctx.operator(0).accept(this));
             if(ctx.AND() != null || ctx.OR() != null) {
                 if(ctx.AND() != null) {
                     query.append("AND ");
@@ -176,39 +183,58 @@ public class AntlrParser extends MySqlGeneratorBaseVisitor<String> {
                     query.append("OR ");
                 }
 
-                if(ctx.operator(2) != null) {
-                    query.append(ctx.operator(2).accept(this));
+                if(ctx.operator(1) != null) {
+                    query.append(ctx.operator(1).accept(this));
                 } else {
                     query.append(ctx.expression().accept(this));
                 }
             }
         }
-
-
-
-
-
-
         return query.toString();
     }
 
     @Override
     public String visitOperator(MySqlGeneratorParser.OperatorContext ctx) {
-        return "OPERATOR TODO";
+        StringBuilder query = new StringBuilder();
+        query.append(tmpColumnName);
+        query.append(" ");
+
+        if(ctx.IS_NULL() != null) {
+            query.append("IS NULL ");
+        }else if(ctx.BETWEEN() != null) {
+            query.append("BETWEEN ");
+            query.append(ctx.COLUMNNAME(0).getText());
+            query.append(" AND ");
+            query.append(ctx.COLUMNNAME(1).getText());
+            query.append(" ");
+        } else {
+            query.append(SimpleOperatorMapper.getSqlStart(ctx.simpleoperator().children.getFirst().getText()));
+            if(ctx.COLUMNNAME(0) != null){
+                query.append(ctx.COLUMNNAME(0).getText());
+                query.append(" ");
+            } else {
+                query.append("? ");
+            }
+
+        }
+        return query.toString();
     }
 
     @Override
     public String visitOrderByClause(MySqlGeneratorParser.OrderByClauseContext ctx) {
-        return super.visitOrderByClause(ctx);
+        return "ORDER BY " + ctx.orderColumn().stream().map(x -> x.accept(this)).collect(Collectors.joining(", "));
+    }
+
+    @Override
+    public String visitOrderColumn(MySqlGeneratorParser.OrderColumnContext ctx) {
+        var direction = (ctx.DESC() != null) ? " DESC" : " ASC";
+        return ctx.COLUMNNAME() + direction;
     }
 
     @Override
     public String visitGroupByClause(MySqlGeneratorParser.GroupByClauseContext ctx) {
-        return super.visitGroupByClause(ctx);
+        return "GROUP BY " + ctx.COLUMNNAME().stream().map(ParseTree::getText).collect(Collectors.joining(", "));
     }
 
-    private String genIfNotNull(Object object, String gen) {
-        return object == null ? "" : gen;
-    }
 
 }

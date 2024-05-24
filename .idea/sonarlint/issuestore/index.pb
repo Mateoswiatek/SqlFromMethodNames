@@ -58,3 +58,5 @@ Z
 +gen/org/example/MySqlGeneratorListener.java,6\4\641a51ced7d3f1098e03b6aa84f9a3aafa72cda2
 l
 <src/main/java/org/example/converter/CustomErrorListener.java,b\0\b09441830943cae3927e85d16ab61ad292516afc
+j
+:src/main/java/org/example/common/SimpleOperatorMapper.java,0\d\0d5ba41a8351304940895b57eb9fb02518ef735e

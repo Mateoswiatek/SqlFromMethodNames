@@ -1,24 +1,6 @@
 grammar MySqlGenerator;
 // https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
 
-/*
-tabela1findAll
-tabela1findCount
-tabela1findCountkolumna2SUBtabela2findAll
-tabela1findCountkolumna2kolumna3
-tabela1findAllWherekolumna1LessThanOrEquals
-tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRR
-tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRRAndkolumna1LessThankolumna2Andkolumna2Equals
-tabela1findkolumna1OrderBykolumna2GroupBykolumna1
-tabela1deleteWherekolumna1Equals
-tabela1findkolumna1Wherekolumna1LessThanOrEqualsOrderBykolumna2GroupBykolumna1
-
-
-full test:
-tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRRAndkolumna1LessThankolumna2Andkolumna2EqualsOrderBykolumna1GroupBykolumna2
-tabela1findAllWherekolumna1LessThan
-
-*/
 
 
 TABLENAME // to będzie dynamicznie dodawane, na podstawie skanowania. -> robimy Seta
@@ -37,7 +19,7 @@ LPAREN : 'LL';
 RPAREN : 'RR';
 
 //Operacje na bazie danych
-FIND: 'find';
+//FIND: 'find';
 DELETE: 'delete';
 
 //Clause
@@ -73,7 +55,7 @@ DESC: 'Desc';
 //    ;
 
 query
-    : TABLENAME statement EOF
+    : TABLENAME statement
     ;
 
 statement
@@ -83,11 +65,11 @@ statement
 
 
 findStatement
-    : FIND selectItem findAdditionalClausules //(limitClause)? (Having)?
+    : 'find' selectItem findAdditionalClausules //(limitClause)? (Having)?
     ;
 
 findAdditionalClausules
-    : (whereClause)? (orderByClause)? (groupByClause)?
+    : (whereClause)? (groupByClause)? (orderByClause)?
     ;
 
 deleteStatement
@@ -125,7 +107,7 @@ condition
     : (variableexpression
     | variableexpression AND (variableexpression | condition)
     | variableexpression OR (variableexpression | condition)
-    | LPAREN (variableexpression | condition) RPAREN)
+    | (NOT)? LPAREN (variableexpression | condition) RPAREN)
     ;
 
 variableexpression
@@ -137,21 +119,35 @@ expression
     : operator
     | operator AND (operator | expression)
     | operator OR (operator | expression)
-    | LPAREN (operator | expression) RPAREN
+    | (NOT)? LPAREN (operator | expression) RPAREN
     ;
 
 operator
-    :('Equals' | 'LessThan' | 'GreaterThan' | 'Between') (COLUMNNAME)?
-    | IS_NULL | ('Between' (COLUMNNAME)? AND (COLUMNNAME)?)
+    : simpleoperator (COLUMNNAME)?
+    | IS_NULL | (BETWEEN (COLUMNNAME)? AND (COLUMNNAME)?)
 //    | IN (query)?
     ;
+
+simpleoperator
+    : (EQUALS | LESSTHAN | GREATERTHAN)
+    ;
+
+EQUALS: 'Equals';
+LESSTHAN: 'LessThan';
+GREATERTHAN: 'GreaterThan';
+BETWEEN: 'Between';
 
 //===============================================================
 //                          ORDER BY
 //===============================================================
 
 orderByClause
-    : ORDER_BY COLUMNNAME (ASC | DESC)?;
+    : ORDER_BY (orderColumn)+
+    ;
+
+orderColumn
+    : COLUMNNAME (ASC | DESC)?
+    ;
 
 groupByClause
     : GROUP_BY (COLUMNNAME)+;

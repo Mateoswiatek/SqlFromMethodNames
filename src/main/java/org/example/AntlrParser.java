@@ -9,10 +9,6 @@ import org.example.common.SimpleOperatorMapper;
 
 import java.util.stream.Collectors;
 
-/*
-  .accept(this) na nodzie przechodzi nam do odpowiedniej metody. przydatne z children.findFirst()
- */
-
 @Slf4j
 public class AntlrParser extends MySqlGeneratorBaseVisitor<String> {
 
@@ -29,8 +25,7 @@ public class AntlrParser extends MySqlGeneratorBaseVisitor<String> {
         log.debug("tableName: {}", tableName);
 
         query.append("(");
-//        query.append(ctx.statement().accept(this));
-        query.append(visitStatement(ctx.statement()));
+        query.append(ctx.statement().accept(this));
         query.append(")");
 
         return query.toString();

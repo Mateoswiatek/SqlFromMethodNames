@@ -1,0 +1,11 @@
+todo - Jak na razie, jeszcze trzeba ręcznie dodawać nazwy klas i kolumn,
+Zmergować z poprzednim podejściem, z użyciem refleksji będziemy pobierać wszystkie nazwy
+encji i kolumn. z nich tworzone będą sety,
+
+todo - dodajemy nazwy kolumn z bazy danych - te podawane w adnotacjach, oraz robimy ogromnego mappera
+gdzie podajemy nazwę klasy (encji) i nazwe pola, i ten mapper zwraca nam nazwę tego pola w bazie danych.
+najlepiej Map w Mapie. Podajemy nazwę Entity,
+Map<String, Map<String, String>>
+<entityName, <fieldName, columnName>>
+
+todo - Rozwinąć ROZWINĄĆ Z DOKUMENTACJI Like, Null, After

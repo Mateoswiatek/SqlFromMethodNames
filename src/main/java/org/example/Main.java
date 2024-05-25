@@ -6,14 +6,12 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-
 import java.util.List;
-
-//todo zrobić aby nazwy się generowały w zależności od
 
 @Slf4j
 public class Main {
     public static void main(String[] args) {
+        //demo
         var list = List.of(
                 "tabela1findAll",
                 "tabela1findkolumna1",
@@ -44,25 +42,16 @@ public class Main {
 
             var out = compile(charStream);
 
-            // Wypisz drzewo parse
             log.info("Input={}", input);
             log.info("Output={}\n\n", out);
         });
 
     }
 
-
     public static String compile(CharStream input) {
-        // Create a lexer that feeds off of input CharStream
         MySqlGeneratorLexer lexer = new MySqlGeneratorLexer(input);
-
-        // Create a buffer of tokens pulled from the lexer
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-        // Create a parser that feeds off the tokens buffer
         MySqlGeneratorParser parser = new MySqlGeneratorParser(tokens);
-
-        // Begin parsing at rule query
         ParseTree tree = parser.query();
 
         return new AntlrParser().visit(tree);

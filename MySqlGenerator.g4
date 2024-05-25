@@ -1,26 +1,18 @@
 grammar MySqlGenerator;
 // https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
 
-
-
-TABLENAME // to będzie dynamicznie dodawane, na podstawie skanowania. -> robimy Seta
+TABLENAME // to będzie dynamicznie dodawane, na podstawie skanowania -> robimy Seta
     : 'tabela1' | 'tabela2' | 'tabela3'
     ;
 
-
-COLUMNNAME // to również będzie dynamicznie dodawane, na podstawie skanowania -> robimy Seta.
+COLUMNNAME // to będzie dynamicznie dodawane, na podstawie skanowania -> robimy Seta
     : 'kolumna1' | 'kolumna2' | 'kolumna3'
     ;
 
-
 ALL: 'All';
-SUBQUERY: 'SUB';
+//SUBQUERY: 'SUB';
 LPAREN : 'LL';
 RPAREN : 'RR';
-
-//Operacje na bazie danych
-//FIND: 'find';
-DELETE: 'delete';
 
 //Clause
 WHERE: 'Where';
@@ -39,14 +31,20 @@ AND: 'And';
 OR: 'Or';
 NOT: 'Not';
 
+//Operatory Arytmetyczne
+EQUALS: 'Equals';
+LESSTHAN: 'LessThan';
+GREATERTHAN: 'GreaterThan';
+BETWEEN: 'Between';
+
 //Warunki
 IS_NULL: 'IsNull';
 IN: 'In';
-// inne ...
 
 //Sortowanie
 ASC: 'Asc';
 DESC: 'Desc';
+
 
 
 // do zagnieżdżen querek
@@ -59,8 +57,7 @@ query
     ;
 
 statement
-    : (findStatement | deleteStatement)
-//    //| deleteStatement | updateStatement | insertStatement
+    : (findStatement) //    //| deleteStatement | updateStatement | insertStatement
     ;
 
 
@@ -73,7 +70,7 @@ findAdditionalClausules
     ;
 
 deleteStatement
-    : DELETE (whereClause)?
+    : 'delete' (whereClause)?
     ;
 
 selectItem
@@ -96,7 +93,6 @@ aggregationType:
 //===============================================================
 //                          WHERE
 //===============================================================
-//todo ROZWINĄĆ Z DOKUMENTACJI Like, Null, After
 
 //Rekurencyjne zagnieżdżenia. można dać wiele do tej samej kolumny.
 whereClause
@@ -132,10 +128,7 @@ simpleoperator
     : (EQUALS | LESSTHAN | GREATERTHAN)
     ;
 
-EQUALS: 'Equals';
-LESSTHAN: 'LessThan';
-GREATERTHAN: 'GreaterThan';
-BETWEEN: 'Between';
+
 
 //===============================================================
 //                          ORDER BY
@@ -155,7 +148,3 @@ groupByClause
 WS
     : [ \t\r\n]+ -> skip // Ignoruj białe znaki między tokenami
     ;
-
-//TABLENAME : LETTER (LETTER | DIGIT | '_')* ;
-//fragment LETTER : [a-zA-Z] ;
-//fragment DIGIT : [0-9] ;

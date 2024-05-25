@@ -1,0 +1,2 @@
+tabela1findAllWherekolumna1LessThan
+(SELECT * FROM tabela1 WHERE ( kolumna1 < ? ))

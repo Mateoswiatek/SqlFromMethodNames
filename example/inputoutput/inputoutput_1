@@ -1,0 +1,2 @@
+tabela1findkolumna1
+(SELECT tabela1.kolumna1 FROM tabela1 )

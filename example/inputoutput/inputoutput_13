@@ -1,0 +1,2 @@
+tabela1findAllOrderBykolumna2
+(SELECT * FROM tabela1 ORDER BY kolumna2 ASC)

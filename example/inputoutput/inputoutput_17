@@ -1,0 +1,2 @@
+tabela1findAllGroupBykolumna1kolumna2OrderBykolumna2
+(SELECT * FROM tabela1 GROUP BY kolumna1, kolumna2 ORDER BY kolumna2 ASC)

@@ -1,0 +1,2 @@
+tabela1findAll
+(SELECT * FROM tabela1 )

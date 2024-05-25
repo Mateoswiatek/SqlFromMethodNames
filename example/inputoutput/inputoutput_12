@@ -1,0 +1,2 @@
+tabela1findkolumna1Wherekolumna1LessThanOrEqualsOrderBykolumna2GroupBykolumna1
+(SELECT tabela1.kolumna1 FROM tabela1 WHERE ( kolumna1 < ? OR kolumna1 == ? ) ORDER BY kolumna2 ASC)

@@ -6,11 +6,14 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Slf4j
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //demo
         var list = List.of(
                 "tabela1findAll",
@@ -37,14 +40,36 @@ public class Main {
                 "tabela1findAllWherekolumna1LessThan"
         );
 
-        list.forEach(input -> {
+//        list.forEach(input -> {
+//            CharStream charStream = CharStreams.fromString(input);
+//
+//            var out = compile(charStream);
+//
+//            log.info("Input={}", input);
+//            log.info("Output={}\n\n", out);
+//        });
+
+        Files.createDirectories(Paths.get("example/input"));
+        Files.createDirectories(Paths.get("example/output"));
+        Files.createDirectories(Paths.get("example/inputoutput"));
+
+        for (int i = 0; i < list.size(); i++) {
+            String input = list.get(i);
             CharStream charStream = CharStreams.fromString(input);
 
             var out = compile(charStream);
 
             log.info("Input={}", input);
             log.info("Output={}\n\n", out);
-        });
+
+            try {
+                Files.writeString(Paths.get("example/input/input_" + i), input);
+                Files.writeString(Paths.get("example/output/output_" + i), out);
+                Files.writeString(Paths.get("example/inputoutput/inputoutput_" + i), (input + "\n" + out));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

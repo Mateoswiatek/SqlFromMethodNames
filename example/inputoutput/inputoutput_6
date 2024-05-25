@@ -1,0 +1,2 @@
+tabela1findkolumna1Avgkolumna2WhereLLkolumna1LessThanRR
+(SELECT tabela1.kolumna1, AVG(tabela1.kolumna2) FROM tabela1 WHERE ( ( kolumna1 < ? ) ))

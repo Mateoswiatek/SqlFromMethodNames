@@ -1,0 +1,2 @@
+tabela1findMaxkolumna1kolumna2Maxkolumna1
+(SELECT MAX(tabela1.kolumna1), tabela1.kolumna2, MAX(tabela1.kolumna1) FROM tabela1 )

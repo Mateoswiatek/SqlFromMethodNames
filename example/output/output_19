@@ -1,0 +1,1 @@
+(SELECT tabela1.kolumna1, COUNT(*), tabela1.kolumna1, MAX(tabela1.kolumna2), tabela1.kolumna1, SUM(tabela1.kolumna2), tabela1.kolumna1, AVG(tabela1.kolumna2), tabela1.kolumna1, MIN(tabela1.kolumna2), tabela1.kolumna1, MAX(tabela1.kolumna2), tabela1.kolumna1 FROM tabela1 )

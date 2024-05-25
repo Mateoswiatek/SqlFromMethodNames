@@ -1,0 +1,2 @@
+tabela1findAllWherekolumna1EqualsOrderBykolumna2kolumna1Desc
+(SELECT * FROM tabela1 WHERE ( kolumna1 == ? ) ORDER BY kolumna2 ASC, kolumna1 DESC)

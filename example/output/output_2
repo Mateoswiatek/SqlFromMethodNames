@@ -1,0 +1,1 @@
+(SELECT tabela1.kolumna1, tabela1.kolumna2 FROM tabela1 )

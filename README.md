@@ -1,67 +1,65 @@
 ## SQL Query Generator
-# Prezentacja
-Własna implementacja na wzór springData.
-Generowanie zapytań SQL na podstawie nazw metod oraz metadanych kodu źródłowego.
+# Presentation during classes
+Own implementation similar to springData.
+Generating SQL queries based on method names and source code metadata.
 
-Programista tworzy klasę repository, w niej
-tworzy metody, których nazwa definiuje treść zapytania,
-za pomocą bardzo prostej konwencji nazewnczej.
+The programmer creates a repository class in it
+creates methods whose name defines the content of the query,
+using a very simple naming convention.
 
-Przekazuje również parametry do tego zapytania.
+It also passes parameters to this query.
 
-nazwa tabeli podstawowej, w celu minimalizacji wymagandych danych od programisty,
-będzie dostarczana (dopisywana na poczatku nazwy metody) uzywając metadanych
-przy klasie repozytorium -> Klasa parametryzowana, a w klasie encji odpowiednia adnotacja.
-Która definiuje nazwę tabeli.
+the name of the base table, in order to minimize data required from the programmer,
+will be supplied (appended to the beginning of the method name) using metadata
+next to the repository class -> Parameterized class, and in the entity class the appropriate annotation.
+Which defines the table name.
 
-nazwy możliwych tabel jak i kolumn - atrybutów, będa dynamicznie definiowane w gramatyce na 
-etapie skanowania kodu.
-(Jak Hibernate)
+names of possible tables and columns - attributes, will be dynamically defined in the grammar on 
+code scanning stage.
+(Like Hibernate)
 
-Select - pobieranie danych,
-wszystkie rekordy, konkretne kolumny, funkcje agregujące, dowolne konfiguracje, które
-są dozwolone przez SQLa.
+Select - downloading data,
+all records, specific columns, aggregate functions, any configurations that
+are allowed by SQL.
 
-Aby umożliwić większy polimorfizm, zostały dodane struktury agregujące - dodatkowe klauzule.
-Dzięki czemu kod jest czytelniejszy, oraz takie podejście będzie wymagało mniejszej
-ilości zmian w kodzie przy dodawaniu kolejnych klauzul.
-Będzie to po prostu kolejny element na liście (dzieci findAdditionalClausules)
+To enable greater polymorphism, aggregation structures - additional clauses - have been added.
+This makes the code more readable, and this approach will require less
+the number of changes in the code when adding subsequent clauses.
+It will just be another item in the list (children of findAdditionalClausules)
 
-Definiowanie zwrotki
-- Wszystko, lub kkonkretne kolumny i lub agregatory. tylko w Count może byc *.
-Agregatory przymują na jakiej kolumnie agregacja ma zostać dokonana.
+Defining a stanza
+- Everything, or kspecific columns and or aggregators. only in Count it can be *.
+Aggregators determine on which column the aggregation is to be performed.
 
-- Rozwojowo, tu można by dodać podzapytania.
+- For development purposes, you could add subqueries here.
 
-Dodatkowe klauzule:
-- Where - warunek może dotyczyć jednej / wielu kolumn. możliwość negacji oraz nawiasowania
-zapewniają dostęp do pełnego dobrodziejstwa jaką daje nam logika.
+Additional clauses:
+- Where - the condition may apply to one/many columns. possibility of negation and bracketing
+they provide access to the full benefits that logic gives us.
 
-definiujemy kolumne dla której bedziemy określać wyrażenie.
-samo wyrażenie jest ciekawą rzeczą.
-W celu redukcji redundancji danych, możliwe jest definiowanie dla jednej kolumny
-wielu warunków logicznych. Co więcej, to własnie tutaj jest
-możliwość wstrzykiwania zmiennych. 
-Po określeniu warunku, programista może albo okreslić inną kolumnę,
-jako drugi argument warunku lub przekazać wartość jako argument metody odpowiedzialnej za
-to konkretne zapytanie.
+we define the column for which we will define the expression.
+the expression itself is an interesting thing.
+In order to reduce data redundancy, it is possible to define for one column
+many logical conditions. What's more, it's right here
+possibility of variable injection. 
+After specifying the condition, the programmer can either specify a different column,
+as the second argument of a condition or pass a value as an argument to the responsible method
+this specific query.
 
-tabela1findAllWherekolumna1LessThankolumna2
-tabela1findAllWherekolumna1LessThan
+table1findAllWherecolumn1LessThankcolumn2
+table1findAllWherecolumn1LessThan
 
-Between jest specjalnym operatorem, gdyz jest to operator dwuargumentowy. Tutaj również,
-można definiować albo kolumny, albo przekazywać zmienne.
-Podając jeden argument, zawsze będzie dolną granica
+Between is a special operator because it is a binary operator. Here too,
+you can either define columns or pass variables.
+Given one argument, there will always be a lower bound
 
-tabela1findAllWherekolumna1BetweenAnd
-tabela1findAllWherekolumna1Betweenkolumna1And
-tabela1findAllWherekolumna1Betweenkolumna1And
+table1findAllWherecolumn1BetweenAnd
+table1findAllWherecolumn1Betweencolumn1And
 
-Order By -> przekazujemy jedną lub więcej kolumn. dla każdej można zdefiniować kierunek
-sortowania. domyślnie jest ASC. rosnąco od 0 do 100
+Order By -> we pass one or more columns. a direction can be defined for each
+sorting. default is ASC. ascending from 0 to 100...
 
-Grouping by -  podajemy jedną lub więcej kolumn.
-
+Grouping by - we provide one or more columns.
 
 
 # Description

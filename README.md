@@ -1,4 +1,68 @@
 ## SQL Query Generator
+# Prezentacja
+Własna implementacja na wzór springData.
+Generowanie zapytań SQL na podstawie nazw metod oraz metadanych kodu źródłowego.
+
+Programista tworzy klasę repository, w niej
+tworzy metody, których nazwa definiuje treść zapytania,
+za pomocą bardzo prostej konwencji nazewnczej.
+
+Przekazuje również parametry do tego zapytania.
+
+nazwa tabeli podstawowej, w celu minimalizacji wymagandych danych od programisty,
+będzie dostarczana (dopisywana na poczatku nazwy metody) uzywając metadanych
+przy klasie repozytorium -> Klasa parametryzowana, a w klasie encji odpowiednia adnotacja.
+Która definiuje nazwę tabeli.
+
+nazwy możliwych tabel jak i kolumn - atrybutów, będa dynamicznie definiowane w gramatyce na 
+etapie skanowania kodu.
+(Jak Hibernate)
+
+Select - pobieranie danych,
+wszystkie rekordy, konkretne kolumny, funkcje agregujące, dowolne konfiguracje, które
+są dozwolone przez SQLa.
+
+Aby umożliwić większy polimorfizm, zostały dodane struktury agregujące - dodatkowe klauzule.
+Dzięki czemu kod jest czytelniejszy, oraz takie podejście będzie wymagało mniejszej
+ilości zmian w kodzie przy dodawaniu kolejnych klauzul.
+Będzie to po prostu kolejny element na liście (dzieci findAdditionalClausules)
+
+Definiowanie zwrotki
+- Wszystko, lub kkonkretne kolumny i lub agregatory. tylko w Count może byc *.
+Agregatory przymują na jakiej kolumnie agregacja ma zostać dokonana.
+
+- Rozwojowo, tu można by dodać podzapytania.
+
+Dodatkowe klauzule:
+- Where - warunek może dotyczyć jednej / wielu kolumn. możliwość negacji oraz nawiasowania
+zapewniają dostęp do pełnego dobrodziejstwa jaką daje nam logika.
+
+definiujemy kolumne dla której bedziemy określać wyrażenie.
+samo wyrażenie jest ciekawą rzeczą.
+W celu redukcji redundancji danych, możliwe jest definiowanie dla jednej kolumny
+wielu warunków logicznych. Co więcej, to własnie tutaj jest
+możliwość wstrzykiwania zmiennych. 
+Po określeniu warunku, programista może albo okreslić inną kolumnę,
+jako drugi argument warunku lub przekazać wartość jako argument metody odpowiedzialnej za
+to konkretne zapytanie.
+
+tabela1findAllWherekolumna1LessThankolumna2
+tabela1findAllWherekolumna1LessThan
+
+Between jest specjalnym operatorem, gdyz jest to operator dwuargumentowy. Tutaj również,
+można definiować albo kolumny, albo przekazywać zmienne.
+Podając jeden argument, zawsze będzie dolną granica
+
+tabela1findAllWherekolumna1BetweenAnd
+tabela1findAllWherekolumna1Betweenkolumna1And
+tabela1findAllWherekolumna1Betweenkolumna1And
+
+Order By -> przekazujemy jedną lub więcej kolumn. dla każdej można zdefiniować kierunek
+sortowania. domyślnie jest ASC. rosnąco od 0 do 100
+
+Grouping by -  podajemy jedną lub więcej kolumn.
+
+
 
 # Description
 The aim of the project is to create a tool that automatically generates SQL queries based on processed method names.

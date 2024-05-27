@@ -198,9 +198,9 @@ public class AntlrParser extends MySqlGeneratorBaseVisitor<String> {
             query.append("IS NULL ");
         }else if(ctx.BETWEEN() != null) {
             query.append("BETWEEN ");
-            query.append(ctx.COLUMNNAME(0).getText());
+            query.append( ctx.COLUMNNAME(0) != null ? ctx.COLUMNNAME(0).getText() : " ? ");
             query.append(" AND ");
-            query.append(ctx.COLUMNNAME(1).getText());
+            query.append( ctx.COLUMNNAME(1) != null ? ctx.COLUMNNAME(1).getText() : " ? ");
             query.append(" ");
         } else {
             query.append(SimpleOperatorMapper.getSqlStart(ctx.simpleoperator().children.getFirst().getText()));

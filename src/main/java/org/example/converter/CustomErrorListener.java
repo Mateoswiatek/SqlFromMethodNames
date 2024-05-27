@@ -16,7 +16,12 @@ public class CustomErrorListener extends BaseErrorListener {
                             int line, int charPositionInLine,
                             String msg,
                             RecognitionException e) {
-        errors.add("line " + line + ":" + charPositionInLine + " " + msg);
+        String error = "Niepoprawna nazwa metody: " +
+                recognizer.getInputStream() +
+                "\nPsss, błąd jest związany z: " +
+                msg;
+
+        errors.add(error);
     }
 
     public boolean hasErrors() {

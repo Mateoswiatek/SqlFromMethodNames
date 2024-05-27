@@ -1,2 +1,2 @@
-tabela1findkolumna1Wherekolumna1LessThanOrEqualsOrderBykolumna2GroupBykolumna1
-(SELECT tabela1.kolumna1 FROM tabela1 WHERE ( kolumna1 < ? OR kolumna1 == ? ) ORDER BY kolumna2 ASC)
+tabela1findAllWherekolumna1Betweenkolumna2Andkolumna1
+(SELECT * FROM tabela1 WHERE ( kolumna1 BETWEEN kolumna2 AND kolumna1 ))

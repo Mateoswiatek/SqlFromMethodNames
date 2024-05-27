@@ -1,1 +1,1 @@
-(SELECT tabela1.kolumna1, AVG(tabela1.kolumna2) FROM tabela1 WHERE ( ( kolumna1 < ? ) ))
+(SELECT * FROM tabela1 WHERE ( kolumna1 < ? ))

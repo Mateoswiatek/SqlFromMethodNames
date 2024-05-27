@@ -62,11 +62,11 @@ statement
 
 
 findStatement
-    : 'find' selectItem findAdditionalClausules //(limitClause)? (Having)?
+    : 'find' selectItem findAdditionalClausules
     ;
 
 findAdditionalClausules
-    : (whereClause)? (groupByClause)? (orderByClause)?
+    : (whereClause)? (groupByClause)? (orderByClause)? //(limitClause)? (Having)?
     ;
 
 deleteStatement

@@ -1,2 +1,2 @@
-tabela1findMaxkolumna1kolumna2Maxkolumna1
-(SELECT MAX(tabela1.kolumna1), tabela1.kolumna2, MAX(tabela1.kolumna1) FROM tabela1 )
+tabela1findkolumna1kolumna2Countkolumna1
+(SELECT tabela1.kolumna1, tabela1.kolumna2, COUNT(tabela1.kolumna1) FROM tabela1 )

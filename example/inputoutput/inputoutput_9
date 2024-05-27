@@ -1,2 +1,2 @@
-tabela1findkolumna1Avgkolumna2WhereNotLLkolumna1LessThankolumna1RR
-(SELECT tabela1.kolumna1, AVG(tabela1.kolumna2) FROM tabela1 WHERE ( NOT( kolumna1 < kolumna1 ) ))
+tabela1findAllWherekolumna1BetweenAnd
+(SELECT * FROM tabela1 WHERE ( kolumna1 BETWEEN  ?  AND  ?  ))

@@ -1,2 +1,2 @@
-tabela1findkolumna1Avgkolumna2Wherekolumna1LessThanOrLessThanOrLessThanAndLLLessThanAndLessThanRRAndkolumna1LessThankolumna2Andkolumna2Equals
-(SELECT tabela1.kolumna1, AVG(tabela1.kolumna2) FROM tabela1 WHERE ( kolumna1 < ? OR kolumna1 < ? OR kolumna1 < ? AND (kolumna1 < ? AND kolumna1 < ? ) AND kolumna1 < kolumna2 AND kolumna2 == ? ))
+tabela1findAllWherekolumna1BetweenAndkolumna1
+(SELECT * FROM tabela1 WHERE ( kolumna1 BETWEEN kolumna1 AND  ?  ))

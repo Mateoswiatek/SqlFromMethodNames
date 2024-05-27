@@ -1,5 +1,9 @@
 ## SQL Query Generator
+Honestly, I completed this project in under 20 hours, starting from zero knowledge.
+Older repo, with my own attempt at a parser, reflection and annotations. [repo](https://github.com/Mateoswiatek/CustomSpringDataJava).
+
 # Presentation during classes
+
 Own implementation similar to springData.
 Generating SQL queries based on method names and source code metadata.
 
